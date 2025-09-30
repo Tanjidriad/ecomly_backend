@@ -1,0 +1,1233 @@
+{
+  "info": {
+    "name": "E-Commerce API Collection",
+    "description": "Complete API collection for the E-Commerce application with all endpoints, examples, and environment variables",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "e-commerce-api-collection",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "patch": 0
+    }
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"StrongP@ssw0rd\",\n  \"phone\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/register",
+              "host": ["{{BASE_URL}}"],
+              "path": ["register"]
+            },
+            "description": "Register a new user with name, email, password, and phone number"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"StrongP@ssw0rd\",\n  \"phone\": \"+1234567890\"\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/register",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["register"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": \"64a7b8c9d1e2f3g4h5i6j7k8\",\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"isAdmin\": false,\n  \"cart\": [],\n  \"wishlist\": []\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('JWT_TOKEN', jsonData.token);",
+                  "    pm.environment.set('USER_ID', jsonData.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"StrongP@ssw0rd\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/login",
+              "host": ["{{BASE_URL}}"],
+              "path": ["login"]
+            },
+            "description": "Login user and get JWT token"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"StrongP@ssw0rd\"\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/login",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"user\": {\n    \"id\": \"64a7b8c9d1e2f3g4h5i6j7k8\",\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"isAdmin\": false\n  },\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/verify-token",
+              "host": ["{{BASE_URL}}"],
+              "path": ["verify-token"]
+            },
+            "description": "Verify if the JWT token is valid"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/forgot-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["forgot-password"]
+            },
+            "description": "Send password reset OTP to user's email"
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/verify-otp",
+              "host": ["{{BASE_URL}}"],
+              "path": ["verify-otp"]
+            },
+            "description": "Verify the OTP for password reset"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"newPassword\": \"NewStrongP@ssw0rd\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/reset-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["reset-password"]
+            },
+            "description": "Reset user password with new password"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 User Management",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users"]
+            },
+            "description": "Get all users (Admin only)"
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}"]
+            },
+            "description": "Get specific user details by ID"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"street\": \"456 Oak Ave\",\n  \"apartment\": \"Apt 2B\",\n  \"city\": \"Los Angeles\",\n  \"postalCode\": \"90210\",\n  \"country\": \"USA\",\n  \"phone\": \"+1987654321\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}"]
+            },
+            "description": "Update user information"
+          }
+        },
+        {
+          "name": "Get Payment Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/paymentProfile",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "paymentProfile"]
+            },
+            "description": "Get user's payment profile (Stripe customer ID)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🛒 Cart Management",
+      "item": [
+        {
+          "name": "Get User Cart",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/cart",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "cart"]
+            },
+            "description": "Get all items in user's cart"
+          }
+        },
+        {
+          "name": "Get Cart Count",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/cart/count",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "cart", "count"]
+            },
+            "description": "Get total number of items in user's cart"
+          }
+        },
+        {
+          "name": "Get Cart Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/cart/{{CART_PRODUCT_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "cart", "{{CART_PRODUCT_ID}}"]
+            },
+            "description": "Get specific cart product by ID"
+          }
+        },
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product\": \"{{PRODUCT_ID}}\",\n  \"quantity\": 2,\n  \"size\": \"M\",\n  \"colour\": \"Red\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/cart",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "cart"]
+            },
+            "description": "Add product to user's cart"
+          }
+        },
+        {
+          "name": "Update Cart Item Quantity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/cart/{{CART_PRODUCT_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "cart", "{{CART_PRODUCT_ID}}"]
+            },
+            "description": "Update quantity of item in cart"
+          }
+        },
+        {
+          "name": "Remove from Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/cart/{{CART_PRODUCT_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "cart", "{{CART_PRODUCT_ID}}"]
+            },
+            "description": "Remove item from cart"
+          }
+        }
+      ]
+    },
+    {
+      "name": "❤️ Wishlist Management",
+      "item": [
+        {
+          "name": "Get User Wishlist",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/wishlist",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "wishlist"]
+            },
+            "description": "Get all items in user's wishlist"
+          }
+        },
+        {
+          "name": "Add to Wishlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"{{PRODUCT_ID}}\",\n  \"productName\": \"Product Name\",\n  \"productImage\": \"product_image_url\",\n  \"productPrice\": 29.99\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/wishlist",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "wishlist"]
+            },
+            "description": "Add product to user's wishlist"
+          }
+        },
+        {
+          "name": "Remove from Wishlist",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/users/{{USER_ID}}/wishlist/{{PRODUCT_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["users", "{{USER_ID}}", "wishlist", "{{PRODUCT_ID}}"]
+            },
+            "description": "Remove product from user's wishlist"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.environment.set('CATEGORY_ID', jsonData[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/categories",
+              "host": ["{{BASE_URL}}"],
+              "path": ["categories"]
+            },
+            "description": "Get all product categories"
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/categories/{{CATEGORY_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["categories", "{{CATEGORY_ID}}"]
+            },
+            "description": "Get specific category by ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📱 Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.products && jsonData.products.length > 0) {",
+                  "        pm.environment.set('PRODUCT_ID', jsonData.products[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/products?page=1&limit=10",
+              "host": ["{{BASE_URL}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Products per page"
+                },
+                {
+                  "key": "categories",
+                  "value": "",
+                  "description": "Comma-separated category IDs",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all products with optional filtering and pagination"
+          }
+        },
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/products/search?q=iPhone",
+              "host": ["{{BASE_URL}}"],
+              "path": ["products", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "iPhone",
+                  "description": "Search query"
+                },
+                {
+                  "key": "category",
+                  "value": "",
+                  "description": "Category filter",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "",
+                  "description": "Minimum price",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "",
+                  "description": "Maximum price",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Search products by name or description"
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/products/{{PRODUCT_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["products", "{{PRODUCT_ID}}"]
+            },
+            "description": "Get specific product details by ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "⭐ Reviews",
+      "item": [
+        {
+          "name": "Leave a Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent product, highly recommended!\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/products/{{PRODUCT_ID}}/reviews",
+              "host": ["{{BASE_URL}}"],
+              "path": ["products", "{{PRODUCT_ID}}", "reviews"]
+            },
+            "description": "Leave a review for a product"
+          }
+        },
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/products/{{PRODUCT_ID}}/reviews",
+              "host": ["{{BASE_URL}}"],
+              "path": ["products", "{{PRODUCT_ID}}", "reviews"]
+            },
+            "description": "Get all reviews for a product"
+          }
+        }
+      ]
+    },
+    {
+      "name": "💳 Checkout",
+      "item": [
+        {
+          "name": "Create Checkout Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cartItems\": [\n    {\n      \"product\": \"{{PRODUCT_ID}}\",\n      \"quantity\": 2,\n      \"size\": \"M\",\n      \"colour\": \"Red\"\n    }\n  ],\n  \"shippingAddress\": {\n    \"street\": \"123 Main St\",\n    \"apartment\": \"Apt 1A\",\n    \"city\": \"New York\",\n    \"postalCode\": \"10001\",\n    \"country\": \"USA\",\n    \"phone\": \"+1234567890\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/checkout",
+              "host": ["{{BASE_URL}}"],
+              "path": ["checkout"]
+            },
+            "description": "Create Stripe checkout session for cart items"
+          }
+        },
+        {
+          "name": "Stripe Webhook",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "stripe-signature",
+                "value": "webhook_signature"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"webhook_payload\": \"stripe_webhook_data\"}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/checkout/webhook",
+              "host": ["{{BASE_URL}}"],
+              "path": ["checkout", "webhook"]
+            },
+            "description": "Stripe webhook endpoint for payment notifications"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📦 Orders",
+      "item": [
+        {
+          "name": "Get User Orders",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.environment.set('ORDER_ID', jsonData[0].id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/orders/users/{{USER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "users", "{{USER_ID}}"]
+            },
+            "description": "Get all orders for a specific user"
+          }
+        },
+        {
+          "name": "Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{JWT_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/orders/{{ORDER_ID}}",
+              "host": ["{{BASE_URL}}"],
+              "path": ["orders", "{{ORDER_ID}}"]
+            },
+            "description": "Get specific order details by ID"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔧 Admin",
+      "item": [
+        {
+          "name": "👥 User Management",
+          "item": [
+            {
+              "name": "Get User Count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/users/count",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "users", "count"]
+                },
+                "description": "Get total number of registered users"
+              }
+            },
+            {
+              "name": "Delete User",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/users/{{USER_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "users", "{{USER_ID}}"]
+                },
+                "description": "Delete a user account"
+              }
+            }
+          ]
+        },
+        {
+          "name": "🏷️ Category Management",
+          "item": [
+            {
+              "name": "Add Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"New Category\",\n  \"image\": \"category_image_url\",\n  \"colour\": \"#FF5722\"\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/categories",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "categories"]
+                },
+                "description": "Add a new product category"
+              }
+            },
+            {
+              "name": "Edit Category",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Category\",\n  \"image\": \"new_image_url\",\n  \"colour\": \"#2196F3\"\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/categories/{{CATEGORY_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "categories", "{{CATEGORY_ID}}"]
+                },
+                "description": "Update an existing category"
+              }
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/categories/{{CATEGORY_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "categories", "{{CATEGORY_ID}}"]
+                },
+                "description": "Delete a category"
+              }
+            }
+          ]
+        },
+        {
+          "name": "📱 Product Management",
+          "item": [
+            {
+              "name": "Get Product Count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/products/count",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "products", "count"]
+                },
+                "description": "Get total number of products"
+              }
+            },
+            {
+              "name": "Get All Products (Admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/products?page=1&limit=10",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "products"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ]
+                },
+                "description": "Get all products (admin view with pagination)"
+              }
+            },
+            {
+              "name": "Add Product",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"New Product\",\n  \"description\": \"Product description\",\n  \"price\": 99.99,\n  \"colours\": [\"Red\", \"Blue\"],\n  \"image\": \"main_image_url\",\n  \"images\": [\"image1_url\", \"image2_url\"],\n  \"sizes\": [\"S\", \"M\", \"L\"],\n  \"category\": \"{{CATEGORY_ID}}\",\n  \"genderAgeCategory\": \"unisex\",\n  \"countInStock\": 100\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/products",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "products"]
+                },
+                "description": "Add a new product"
+              }
+            },
+            {
+              "name": "Edit Product",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Product Name\",\n  \"description\": \"Updated description\",\n  \"price\": 149.99,\n  \"countInStock\": 75\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/products/{{PRODUCT_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "products", "{{PRODUCT_ID}}"]
+                },
+                "description": "Update an existing product"
+              }
+            },
+            {
+              "name": "Delete Product Images",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"imagesToDelete\": [\"image1_url\", \"image2_url\"]\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/products/{{PRODUCT_ID}}/images",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "products", "{{PRODUCT_ID}}", "images"]
+                },
+                "description": "Delete specific product images"
+              }
+            },
+            {
+              "name": "Delete Product",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/products/{{PRODUCT_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "products", "{{PRODUCT_ID}}"]
+                },
+                "description": "Delete a product"
+              }
+            }
+          ]
+        },
+        {
+          "name": "📦 Order Management",
+          "item": [
+            {
+              "name": "Get All Orders (Admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/orders?page=1&limit=10",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "orders"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "status",
+                      "value": "",
+                      "description": "Filter by order status",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get all orders (admin view with pagination and filtering)"
+              }
+            },
+            {
+              "name": "Get Order Count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/orders/count",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "orders", "count"]
+                },
+                "description": "Get total number of orders"
+              }
+            },
+            {
+              "name": "Change Order Status",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"shipped\"\n}"
+                },
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/orders/{{ORDER_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "orders", "{{ORDER_ID}}"]
+                },
+                "description": "Update order status (pending, processing, shipped, delivered, cancelled)"
+              }
+            },
+            {
+              "name": "Delete Order",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{ADMIN_JWT_TOKEN}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{BASE_URL}}/admin/orders/{{ORDER_ID}}",
+                  "host": ["{{BASE_URL}}"],
+                  "path": ["admin", "orders", "{{ORDER_ID}}"]
+                },
+                "description": "Delete an order"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "JWT_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ADMIN_JWT_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "USER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "PRODUCT_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "CATEGORY_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ORDER_ID",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "CART_PRODUCT_ID",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
