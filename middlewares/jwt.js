@@ -4,6 +4,12 @@ const { Token } = require('../models/token');
 
 function authJwt() {
   const API = process.env.API_URL;
+  
+  // Check if ACCESS_TOKEN_SECRET is defined
+  if (!process.env.ACCESS_TOKEN_SECRET) {
+    throw new Error('ACCESS_TOKEN_SECRET environment variable is not defined');
+  }
+  
   return expjwt({
     secret: process.env.ACCESS_TOKEN_SECRET,
     algorithms: ['HS256'],

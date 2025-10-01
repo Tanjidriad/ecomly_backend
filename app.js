@@ -39,9 +39,9 @@ app.use('/public', express.static(__dirname + '/public'));
 
 
 // Start the server
-// localhost >> 192.168.0.0
-const hostname = env.HOST;
-const port = env.PORT;
+// Use 0.0.0.0 for production (Render.com) and localhost for development
+const hostname = process.env.NODE_ENV === 'production' ? '0.0.0.0' : (env.HOST || 'localhost');
+const port = env.PORT || 5000;
 require('./helpers/cron_job');
 mongoose
   .connect(env.MONGODB_CONNECTION_STRING)
